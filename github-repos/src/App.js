@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { ApolloProvider } from 'react-apollo'
+import client from './client'
 
-const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN
-
-function App() {
-  return (
-    <div>hi, GraphQL</div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <ApolloProvider client={client}>
+        <div>hi, GraphQL</div>
+      </ApolloProvider>
+    )
+  }
 }
 
 export default App;
