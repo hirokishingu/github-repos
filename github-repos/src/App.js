@@ -56,7 +56,23 @@ class App extends Component {
               const repositoryCount = search.repositoryCount
               const repositoryUnit = repositoryCount === 1 || repositoryCount === 0 ? "レポ" : "レポす"
               const title = `レポれぽす - ${repositoryCount} ${repositoryUnit}`
-              return <h3>{title}</h3>
+              return (
+                <React.Fragment>
+                  <h3>{title}</h3>
+                  <ul>
+                    {
+                      search.edges.map(edge => {
+                        const node = edge.node;
+                        return (
+                          <li>
+                            <a href={Node.url}>{node.name}</a>
+                          </li>
+                        )
+                      })
+                    }
+                  </ul>
+                </React.Fragment>
+              )
             }
           }
         </Query>
