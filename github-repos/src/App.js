@@ -9,6 +9,7 @@ const StarButton = props => {
   const viewerHasStarred = props.node.viewerHasStarred
   const starCount = totalCount === 1 ? "1 star" : `${totalCount} stars`
   const StarStatus = ({ addOrRemoveStar }) => {
+    console.log(addOrRemoveStar)
     return (
       <button
         onClick={
@@ -24,11 +25,21 @@ const StarButton = props => {
   }
 
   return (
-    <Mutation mutation={viewerHasStarred ? REMOVE_STAR : ADD_STAR}>
-      {
-        addOrRemoveStar => <StarStatus addOrRemoveStar={addOrRemoveStar} />
+    <Mutation
+      mutation={viewerHasStarred ? REMOVE_STAR : ADD_STAR}
+      refetchQueries={
+        [
+          {
+            query: SEARCH_REPOSITORIES,
+            variables: { query, first, last, before, after }
+          }
+        ]
       }
-    </Mutation>
+    >
+      {
+        addOrRemoveStar => < StarStatus addOrRemoveStar={addOrRemoveStar} />
+      }
+    </Mutation >
   )
 }
 
@@ -96,8 +107,6 @@ class App extends Component {
               if (loading) return 'Loading...'
               if (error) return 'Error ${error.message}'
 
-              console.log({ data })
-
               const search = data.search
               const repositoryCount = search.repositoryCount
               const repositoryUnit = repositoryCount === 1 || repositoryCount === 0 ? "レポ" : "レポす"
@@ -113,7 +122,7 @@ class App extends Component {
                           <li key={node.id}>
                             <a href={node.url} target="_blank" rel="noopener noreferrer">{node.name}</a>
                             &nbsp;
-                            <StarButton node={node} />
+                            <StarButton node={node} {...{ query, first, last, before, after }} />
                           </li>
                         )
                       })
