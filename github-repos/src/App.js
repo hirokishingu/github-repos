@@ -4,7 +4,7 @@ import client from './client'
 import { ADD_STAR, REMOVE_STAR, SEARCH_REPOSITORIES } from './graphql'
 
 const StarButton = props => {
-  const node = props.node
+  const { node, query, first, last, before, after } = props
   const totalCount = props.node.stargazers.totalCount
   const viewerHasStarred = props.node.viewerHasStarred
   const starCount = totalCount === 1 ? "1 star" : `${totalCount} stars`
